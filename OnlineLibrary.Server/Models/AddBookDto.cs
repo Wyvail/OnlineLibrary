@@ -7,7 +7,7 @@
         public required string Description { get; set; }
         public int ImageId { get; set; }
         public required string Publisher { get; set; }
-        public DateTime PublishDate { get; set; }
+        public DateOnly PublishDate { get; set; }
         public required string Category { get; set; }
         public int ISBN { get; set; }
         public int PageCount { get; set; }
