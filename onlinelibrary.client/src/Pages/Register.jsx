@@ -121,6 +121,7 @@ function Register() {
                         value={password}
                         onChange={handleChange}
                     />
+                    Password must contain at least 6 characters, including UPPER/lowercase, numbers, and a symbol.
                 </div>
                 <div>
                     <label htmlFor="confirmPassword">Confirm Password:</label></div><div>
