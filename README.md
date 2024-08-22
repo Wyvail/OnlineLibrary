@@ -44,3 +44,7 @@ ______________________________________
 * Automatically populate the update book form with the selected book
 * Add styling
 * Add proper filters (includes and excludes)
+* Return password errors properly
+* Cleanup registration page
+* Fix ISBN numbers in seed function
+* Make expanded view expand from under table row
