@@ -1,8 +1,7 @@
-﻿namespace OnlineLibrary.Server.Models.Entities
+﻿namespace OnlineLibrary.Server.Models
 {
-    public class Book
+    public class UpdateBookDto
     {
-        public Guid Id { get; set; }
         public required string Title { get; set; }
         public required string Author { get; set; }
         public required string Description { get; set; }
@@ -15,6 +14,5 @@
         public bool Available { get; set; }
         public required string CheckOutDate { get; set; }
         public required string ReturnDate { get; set; }
-
     }
 }

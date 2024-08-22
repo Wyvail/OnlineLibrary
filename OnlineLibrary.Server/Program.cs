@@ -20,8 +20,9 @@ internal class Program
             options.AddPolicy(name: MyAllowSpecificOrigins,
                               policy =>
                               {
-                                  policy.WithOrigins("http://example.com",
-                                                      "http://www.contoso.com");
+                                  policy.WithOrigins("https://localhost:5173")
+                                                    .AllowAnyHeader()
+                                                    .AllowAnyMethod();
                               });
         });
 
@@ -46,7 +47,7 @@ internal class Program
 
         builder.Services.AddSwaggerGen();
         // Add authentication database session connection
-        
+
 
 
 
@@ -75,7 +76,7 @@ internal class Program
             return Results.Json(new { Email = email });
         }).RequireAuthorization();
 
-        app.MapPost("/registerlibrarian", (AddLibrarianDto addLibrarianDto) =>
+        app.MapPost("/registerlibrarian", (string email, AddLibrarianDto addLibrarianDto) =>
         {
             var librarianEntity = new LibrarianStatus()
             {
@@ -85,8 +86,13 @@ internal class Program
             using var scope = app.Services.CreateScope();
 
             var userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
-            userDbContext.LibrarianStatuses.Add(librarianEntity);
-            userDbContext.SaveChanges();
+            var status = userDbContext.LibrarianStatuses.FirstOrDefault(b => b.Email == email);
+            if (status is null)
+            {
+                userDbContext.LibrarianStatuses.Add(librarianEntity);
+                userDbContext.SaveChanges();
+            }
+
         });
 
         app.UseDefaultFiles();

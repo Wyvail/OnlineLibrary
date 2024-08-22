@@ -29,7 +29,7 @@ function Register() {
             if (!librarian) setLibrarian(true);
             else setLibrarian(false);
         }
-        console.log("email: " + email + " password: " + password + " confirmPassword: " + confirmPassword + "librarian status " + librarian);
+        // console.log("email: " + email + " password: " + password + " confirmPassword: " + confirmPassword + "librarian status " + librarian);
     };
 
     // handle submit event for the form
@@ -71,7 +71,7 @@ function Register() {
                     console.error(error);
                     setError("Error registering.");
                 });
-            fetch("/registerLibrarian", { // add librarian status to the database  
+            fetch("/registerLibrarian?email=" + email, { // add librarian status to the database  
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

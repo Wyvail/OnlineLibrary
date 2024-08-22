@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, createContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import WeatherForecast from "./WeatherForecast.jsx"
+import BookHandler from "./BookHandler.jsx"
 import LogoutLink from "./LogoutLink.jsx"
 
 const UserContext = createContext({});
@@ -87,7 +87,7 @@ function AuthorizeView() {
                 <>
                     <UserContext.Provider value={user}>
                         <span><LogoutLink></LogoutLink></span>
-                        <WeatherForecast />
+                        <BookHandler currentUser={user} />
                     </UserContext.Provider>
                 </>
             );

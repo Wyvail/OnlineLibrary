@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using OnlineLibrary.Server.Data;
 using OnlineLibrary.Server.Models;
 using OnlineLibrary.Server.Models.Entities;
@@ -22,36 +23,97 @@ namespace OnlineLibrary.Server.Controllers
         [HttpGet]
         public IActionResult GetAllBooks()
         {
-            var allBooks = bookDbContext.Books.ToList();
+            var randomBooks = bookDbContext.Books.ToList();
 
-            return Ok(allBooks);
+            randomBooks.OrderBy(r => EF.Functions.Random()).Take(10);
+
+            return Ok(randomBooks);
         }
 
         [HttpPost]
-        public IActionResult AddBook(AddBookDto addBookDto)
+        public IActionResult AddBook(string title, AddBookDto addBookDto)
         {
-            var bookEntity = new Book()
+            var book = bookDbContext.Books.FirstOrDefault(b => b.Title == title);
+            if (book is null)
             {
-                Title = addBookDto.Title,
-                Author = addBookDto.Author,
-                Description = addBookDto.Description,
-                ImageId = addBookDto.ImageId,
-                Publisher = addBookDto.Publisher,
-                PublishDate = addBookDto.PublishDate,
-                Category = addBookDto.Category,
-                ISBN = addBookDto.ISBN,
-                PageCount = addBookDto.PageCount,
-                Available = addBookDto.Available,
-            };
+                var bookEntity = new Book()
+                {
+                    Title = addBookDto.Title,
+                    Author = addBookDto.Author,
+                    Description = addBookDto.Description,
+                    ImageId = addBookDto.ImageId,
+                    Publisher = addBookDto.Publisher,
+                    PublishDate = addBookDto.PublishDate,
+                    Category = addBookDto.Category,
+                    ISBN = addBookDto.ISBN,
+                    PageCount = addBookDto.PageCount,
+                    Available = addBookDto.Available,
+                    CheckOutDate = addBookDto.CheckOutDate,
+                    ReturnDate = addBookDto.ReturnDate
+                };
 
 
-            bookDbContext.Books.Add(bookEntity);
-            bookDbContext.SaveChanges();
+                bookDbContext.Books.Add(bookEntity);
+                bookDbContext.SaveChanges();
 
-            return Ok(bookEntity);
+                return Ok(bookEntity);
+            }
+            else return Ok(book);
         }
 
-        
-        
+        [HttpPut]
+        public IActionResult UpdateBook(string title, UpdateBookDto updateBookDto)
+        {
+            var book = bookDbContext.Books.FirstOrDefault(b => b.Title == title);
+            if (book is null)
+            {
+                return NotFound();
+            }
+
+            book.Title = updateBookDto.Title;
+            book.Author = updateBookDto.Author;
+            book.Description = updateBookDto.Description;
+            book.ImageId = updateBookDto.ImageId;
+            book.Publisher = updateBookDto.Publisher;
+            book.PublishDate = updateBookDto.PublishDate;
+            book.Category = updateBookDto.Category;
+            book.ISBN = updateBookDto.ISBN;
+            book.PageCount = updateBookDto.PageCount;
+
+            bookDbContext.SaveChanges();
+            return Ok(book);
+        }
+
+        [HttpPut]
+        [Route("updateBookAvailability")]
+        public IActionResult UpdateBookAvailability(string title, UpdateAvailabilityDto updateAvailabilityDto)
+        {
+            var book = bookDbContext.Books.FirstOrDefault(b => b.Title == title);
+            if (book is null)
+            {
+                return NotFound();
+            }
+
+            book.Available = updateAvailabilityDto.Available;
+            book.CheckOutDate = updateAvailabilityDto.CheckOutDate;
+            book.ReturnDate = updateAvailabilityDto.ReturnDate;
+
+            bookDbContext.SaveChanges();
+            return Ok(book);
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteBook(string title)
+        {
+            var book = bookDbContext.Books.FirstOrDefault(b => b.Title == title);
+            if (book is null)
+            {
+                return NotFound();
+            }
+
+            bookDbContext.Books.Remove(book);
+            bookDbContext.SaveChanges();
+            return Ok();
+        }
     }
 }
