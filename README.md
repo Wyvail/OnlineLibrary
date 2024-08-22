@@ -22,8 +22,10 @@ __________________________
 4. Create the Identity User Databases:  
   a. Open the Package Manager Console and run ```add-migration Initial-Migration -Context AuthDbContext```  
   b. Run ```update-database -Context AuthDbContext```
-5. Start project and client
-6. A default librarian account is provided as ```admin@admin.net```  
+5. Configure ports in ```vite.config.js```:  
+  a. If needed, change the localhost target and server port in ```vite.config.js```  
+6. Start project and client
+7. A default librarian account is provided as ```admin@admin.net```  
    a. To use this account, register the above email as a user to be able to login to the website.
 
 Usage:
