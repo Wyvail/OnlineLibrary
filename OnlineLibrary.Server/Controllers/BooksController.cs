@@ -23,11 +23,8 @@ namespace OnlineLibrary.Server.Controllers
         [HttpGet]
         public IActionResult GetAllBooks()
         {
-            var randomBooks = bookDbContext.Books.ToList();
-
-            randomBooks.OrderBy(r => EF.Functions.Random()).Take(10);
-
-            return Ok(randomBooks);
+            var books = bookDbContext.Books.ToList();
+            return Ok(books);
         }
 
         [HttpPost]

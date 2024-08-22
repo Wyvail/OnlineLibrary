@@ -4,6 +4,7 @@ import '../App.css';
 import AddBookForm from './AddBookForm.jsx';
 import UpdateBookForm from './UpdateBookForm.jsx';
 import DeleteBookForm from './DeleteBookForm.jsx';
+import Images from '../Assets/Images.jsx';
 
 export default class BookHandler extends React.Component {
 
@@ -192,11 +193,11 @@ export default class BookHandler extends React.Component {
                 {this.state.expanded
                     ?
                     <div>
-                        <p className="expanded">{this.state.books[this.state.currentIndex].publisher}</p>
-                        <p className="expanded">{this.state.books[this.state.currentIndex].publishDate}</p>
-                        <p className="expanded">{this.state.books[this.state.currentIndex].isbn}</p>
-                        <p className="expanded">{this.state.books[this.state.currentIndex].category}</p>
-                        <p className="expanded">{this.state.books[this.state.currentIndex].pageCount}</p>
+                        <p className="expanded">Publisher: {this.state.books[this.state.currentIndex].publisher}</p>
+                        <p className="expanded">Publication Date: {this.state.books[this.state.currentIndex].publishDate}</p>
+                        <p className="expanded">ISBN-10: {this.state.books[this.state.currentIndex].isbn}</p>
+                        <p className="expanded">Category: {this.state.books[this.state.currentIndex].category}</p>
+                        <p className="expanded">Page Count: {this.state.books[this.state.currentIndex].pageCount}</p>
                         {this.state.books[this.state.currentIndex].available ?
                             <button className="checkout-button" onClick={() => this.handleCheckout(this.state.books[this.state.currentIndex].title)}>Check out</button>
                             : <p>Not available, return date: {this.state.books[this.state.currentIndex].returnDate}</p>
@@ -246,7 +247,7 @@ export default class BookHandler extends React.Component {
                                 <td className="title">{book.title}</td>
                                 <td className="author">{book.author}</td>
                                 <td>{book.description}</td>
-                                <td>{book.imageId}</td>
+                                <td><img src={Images.find(o => o.id === book.imageId)?.image}/></td>
                                 <td className="available">{book.available ? <p>Available</p> : <p>Checked Out</p>}</td>
                             </tr>
                         )}
@@ -278,8 +279,13 @@ export default class BookHandler extends React.Component {
             })
                 .then((response) => response.json())
                 .then((data) => {
+                    var newBooks = [];
+                    for (var i = 0; i < 10; i++) {
+                        var randomBook = data[Math.floor(Math.random() * data.length)];
+                        newBooks.push(randomBook);
+                    }
 
-                    this.setState({ books: data, loading: false });
+                    this.setState({ books: newBooks, loading: false });
                     console.log(this.state.books)
                 });
         }
