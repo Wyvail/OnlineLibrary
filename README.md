@@ -48,3 +48,4 @@ ______________________________________
 * Cleanup registration page
 * Fix ISBN numbers in seed function
 * Make expanded view expand from under table row
+* Fix random selection of books
