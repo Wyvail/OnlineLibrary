@@ -280,9 +280,11 @@ export default class BookHandler extends React.Component {
                 .then((response) => response.json())
                 .then((data) => {
                     var newBooks = [];
-                    for (var i = 0; i < 10; i++) {
-                        var randomBook = data[Math.floor(Math.random() * data.length)];
+                    var copy = data.slice(0);
+                    for (var i = 0; i < 5; i++) {
+                        var randomBook = copy[Math.floor(Math.random() * copy.length)];
                         newBooks.push(randomBook);
+                        copy.splice(i, 1);
                     }
 
                     this.setState({ books: newBooks, loading: false });

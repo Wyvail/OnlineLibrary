@@ -186,7 +186,7 @@ function AddBookForm() {
                 </div>
                 
                 <div>
-                    <button type="submit">Register</button>
+                    <button type="submit">Add Book</button>
 
                 </div>
                 
